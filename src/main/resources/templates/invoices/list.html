@@ -1,14 +1,47 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Invoices</title>
+    <style>
+        body {
+            background-color: #e1f1f7;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Invoices</title>
 </head>
+
 <body>
 
-<div>Hello, {{ user.username }}</div>
+    <div>Hello, {{ user.username }}</div>
+	
+{{#showTable}}
+    <h1>Invoices</h1>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Client</th>
+                <th>Created on</th>
+                <th>Created by</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#invoices}}
+            <tr>
+                <td> {{ invoiceNumber }}</td>
+                <td> {{ company.name }}</td>
+                <td> {{ createdOn }}</td>
+                <td> {{ createdBy.username }} </td>
+            </tr>
+            {{ /invoices }}
+        </tbody>
 
-<h1>Invoices</h1>
+    </table>
+{{/showTable}}
+    <a href="invoices/new">New Invoice</a>
 
 </body>
+
 </html>
