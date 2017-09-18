@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.theironyard.invoicify.models.User;
+import com.theironyard.invoicify.repositories.CompanyRepository;
 import com.theironyard.invoicify.repositories.UserRepository;
 
 public class HomeControllerTests {
@@ -16,12 +17,13 @@ public class HomeControllerTests {
 	private PasswordEncoder encoder;
 	private UserRepository repo;
 	private HomeController controller;
+	private CompanyRepository companyRepo;
 	
 	@Before
 	public void setup() {
 		encoder = mock(PasswordEncoder.class);
 		repo = mock(UserRepository.class);
-		controller = new HomeController(repo, encoder);
+		controller = new HomeController(repo, encoder, companyRepo);
 	}
 
 	@Test

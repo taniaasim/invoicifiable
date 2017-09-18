@@ -12,10 +12,12 @@
 </head>
 
 <body>
-
+{{> common/_navigation }}
     <h1>Choose Some Billing Records</h1>
     <form action="/invoices/create" method="post">
         <input type="text" name="invoiceNumber" required placeholder="Invoice number (NaN)">
+	
+	
 
         <table>
             <thead>

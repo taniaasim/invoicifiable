@@ -12,10 +12,7 @@ public interface BillingRecordRepository extends JpaRepository<BillingRecord, Lo
 
 	List<BillingRecord> findByIdIn(long[] recordIds);
 
-	List<BillingRecord> findByIdIsNull(long clientId);
-
-
-	List<BillingRecord> findByClientIdIn(List<BillingRecord> records);
+	List<BillingRecord> findByClientIdAndLineItemIsNull(long clientId);
 	
 	
 	

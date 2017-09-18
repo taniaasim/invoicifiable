@@ -13,8 +13,9 @@
 
 <body>
 
-    <div>Hello, {{ user.username }}</div>
-	
+    {{> common/_navigation }}
+{{ #errorMessageInvoice }}
+{{ /errorMessageInvoice }}
 {{#showTable}}
     <h1>Invoices</h1>
     <br>

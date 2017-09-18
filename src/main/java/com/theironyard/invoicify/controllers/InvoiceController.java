@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +26,7 @@ import com.theironyard.invoicify.repositories.InvoiceRepository;
 @Controller
 @RequestMapping("/invoices")
 public class InvoiceController {
-	
-	List<InvoiceLineItem> items;
-//	List<BillingRecord> records;
+
 
 	@Autowired
 	private CompanyRepository companyRepo;
@@ -48,7 +48,9 @@ public class InvoiceController {
 	public ModelAndView step2(long clientId) {
 		ModelAndView mv = new ModelAndView("invoices/step-2");
 		mv.addObject("clientId", clientId);
-		mv.addObject("records", billingRecordRepo.findByClientId(clientId));
+	//	mv.addObject("records", billingRecordRepo.findByClientId(clientId));
+		mv.addObject("records", billingRecordRepo.findByClientIdAndLineItemIsNull(clientId));
+
 
 		return mv;
 	}
@@ -57,11 +59,9 @@ public class InvoiceController {
 	public String create(Invoice invoice, long clientId, long[] recordIds, Authentication auth) {
 		User creator = (User) auth.getPrincipal();
 		List<BillingRecord> records = billingRecordRepo.findByIdIn(recordIds);
-//		records = billingRecordRepo.findByIdIn(recordIds);
 		long nowish = Calendar.getInstance().getTimeInMillis();
 		Date now = new Date(nowish);
-		//List<InvoiceLineItem> items = new ArrayList<InvoiceLineItem>();
-		items = new ArrayList<InvoiceLineItem>();
+		List<InvoiceLineItem> items = new ArrayList<InvoiceLineItem>();
 		for (BillingRecord record : records) {
 			InvoiceLineItem lineItem = new InvoiceLineItem();
 			lineItem.setBillingRecord(record);
@@ -76,7 +76,7 @@ public class InvoiceController {
 		
 		invoice.setLineItems(items);
 		invoiceRepo.save(invoice);
-	
+		
 		return "redirect:/invoices";
 	}
 	
@@ -90,8 +90,6 @@ public class InvoiceController {
 		mv.addObject("showTable", invoices.size() > 0);
 		return mv;
 	}
-	
-	
 	
 }
 
